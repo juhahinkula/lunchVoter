@@ -16,3 +16,9 @@ Start the project
 ```
 npm start
 ```
+
+Run unit tests
+```
+npm run test
+```
+
