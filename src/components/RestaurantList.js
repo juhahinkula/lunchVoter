@@ -30,7 +30,6 @@ export default function RestaurantList() {
     .then(data => {
       setRestaurants(data.restaurants);
       setAlreadyVoted(data.alreadyVoted);
-      console.log(data);
     })
     .then(_ => fetchResults())
     .catch(err => console.error(err))
