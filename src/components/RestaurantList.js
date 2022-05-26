@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Typography  from '@mui/material/Typography';
 import RestaurantCard from './RestaurantCard';
 import _ from 'lodash';
-import Cities from '../cities.json'
+import Cities from '../cities.json';
 
 export default function RestaurantList() {
   const [city, setCity] = useState('Helsinki');
@@ -30,18 +30,16 @@ export default function RestaurantList() {
     .then(data => {
       setRestaurants(data.restaurants);
       setAlreadyVoted(data.alreadyVoted);
-      console.log(data);
     })
     .then(_ => fetchResults())
     .catch(err => console.error(err))
   }
 
+  // Fetch results and order results by vote
   const fetchResults = () => {
     fetch(`${process.env.REACT_APP_REST_API_URL}/api/v1/results`)
     .then(res => res.json())
-    .then(data => {
-      setTodaysVotes(_.orderBy(data.results, ['votes'], ['desc']));
-    })
+    .then(data => setTodaysVotes(_.orderBy(data.results, ['votes'], ['desc'])))
     .catch(err => console.error(err))
       
   }
