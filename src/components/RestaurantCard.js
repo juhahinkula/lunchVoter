@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Snackbar from '@mui/material/Snackbar';
@@ -46,11 +45,9 @@ export default function RestaurantCard({ restaurant, fetchRestaurants, alreadyVo
     <Badge badgeContent={restaurant.votes} color="primary">
     <Card variant="outlined" sx={{ width: 250 }}>
       <CardContent>
-        <Stack direction="row" spacing={1}>
-          <Typography variant="h7" gutterBottom>
-            {restaurant.name}
-          </Typography>
-          </Stack>
+        <Typography variant="h7" gutterBottom>
+          {restaurant.name}
+        </Typography>
         <Typography variant="body2">
           Open: {restaurant.openingHours}
         </Typography>
