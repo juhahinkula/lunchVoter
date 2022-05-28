@@ -9,6 +9,7 @@ import Typography  from '@mui/material/Typography';
 import RestaurantCard from './RestaurantCard';
 import _ from 'lodash';
 import Cities from '../cities.json';
+import { fetchRestaurants, fetchResults } from '../services/services';
 
 export default function RestaurantList() {
   const [city, setCity] = useState('Helsinki');
@@ -17,31 +18,25 @@ export default function RestaurantList() {
   const [alreadyVoted, setAlreadyVoted] = useState('');
 
   useEffect(() => {
-    fetchRestaurants();
-    fetchResults();
+    loadRestaurants();
+    loadResults();
   }, [city]);
 
-  const fetchRestaurants = () => {
-    fetch(`${process.env.REACT_APP_REST_API_URL}/api/v1/restaurants/${city}`, {
-      method: 'GET',
-      credentials: 'include'
-    })
-    .then(res => res.json())
+  const loadRestaurants = () => {
+    fetchRestaurants(city)
     .then(data => {
       setRestaurants(data.restaurants);
       setAlreadyVoted(data.alreadyVoted);
     })
-    .then(_ => fetchResults())
+    .then(_ => loadResults())
     .catch(err => console.error(err))
   }
 
   // Fetch results and order results by vote
-  const fetchResults = () => {
-    fetch(`${process.env.REACT_APP_REST_API_URL}/api/v1/results`)
-    .then(res => res.json())
+  const loadResults = () => {
+    fetchResults()
     .then(data => setTodaysVotes(_.orderBy(data.results, ['votes'], ['desc'])))
     .catch(err => console.error(err))
-      
   }
 
   return(
@@ -68,7 +63,7 @@ export default function RestaurantList() {
                 <Grid item xs={3}>
                   <RestaurantCard 
                     restaurant={restaurant} 
-                    fetchRestaurants={fetchRestaurants} 
+                    loadRestaurants={loadRestaurants} 
                     alreadyVoted={alreadyVoted}
                   />
                 </Grid>

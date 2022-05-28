@@ -9,30 +9,27 @@ import Snackbar from '@mui/material/Snackbar';
 import Tooltip from '@mui/material/Tooltip';
 import Badge from '@mui/material/Badge';
 import ShowDishes from './ShowDishes';
+import { sendVote } from '../services/services';
 
-export default function RestaurantCard({ restaurant, fetchRestaurants, alreadyVoted }) {  
+export default function RestaurantCard({ restaurant, loadRestaurants, alreadyVoted }) {  
   const [open, setOpen] = React.useState(false);
 
   const voteClicked = () => {
     if (alreadyVoted) {
       if (window.confirm('You have already voted. Do you want to do it again?'))
-        sendVote();
+        vote();
     }
     else {
-      sendVote();
+      vote();
     }
   }
 
-  const sendVote = () => {
-    fetch(`${process.env.REACT_APP_REST_API_URL}/api/v1/vote/${restaurant.id}`, {
-      method: 'POST',
-      credentials: 'include'
-    })
+  const vote = () => {
+    sendVote(restaurant.id)
     .then(response => {
-      console.log('VOTED: ' + response.status);
       if (response.ok) {
         setOpen(true);
-        fetchRestaurants();
+        loadRestaurants();
       }
       else {
         alert('Something went wrong in voting!');
@@ -63,7 +60,7 @@ export default function RestaurantCard({ restaurant, fetchRestaurants, alreadyVo
             <IconButton 
               size="small"
               color="success"
-              onClick={sendVote}>
+              onClick={vote}>
                 <ThumbUpIcon />
             </IconButton> 
           </Tooltip>
